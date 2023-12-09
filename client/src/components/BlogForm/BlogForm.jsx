@@ -1,4 +1,6 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 export default function BlogForm() {
   const [blog, setBlog] = useState({
@@ -7,8 +9,17 @@ export default function BlogForm() {
     image: "",
   });
 
-  const onSave = () => {
-    console.log(blog);
+  const onSave = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/blogs",
+        blog
+      );
+      toast.success(response.data.message);
+      // reset blog state
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   return (
